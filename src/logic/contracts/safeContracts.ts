@@ -259,7 +259,7 @@ export const instantiateSafeContracts = (): void => {
   proxyFactoryMaster = getProxyFactoryContractInstance(web3, chainId, proxyAddress)
 
   // Create Safe Master copy
-  const safeMasterAddress = "0xB220e2eE700649ab27197C9d3f83E18cC0f1535B";
+  const safeMasterAddress = "0xeCeF4D2b021a6C54E156adEF917c64c419dffcc0";
   safeMaster = getGnosisSafeContractInstance(web3, chainId, safeMasterAddress)
 
   // Create Fallback Handler
