@@ -68,15 +68,9 @@ const getSafeContractDeployment = ({ safeVersion }: { safeVersion: string }): Si
  * @param {Web3} web3
  * @param {ChainId} chainId
  */
-const getGnosisSafeContractInstance = (web3: Web3, chainId: ChainId, address: String): GnosisSafe => {
+const getGnosisSafeContractInstance = (web3: Web3, chainId: ChainId): GnosisSafe => {
   const safeSingletonDeployment = getSafeContractDeployment({ safeVersion: LATEST_SAFE_VERSION })
-
-  let contractAddress;
-    if (address) {
-      contractAddress = address
-    } else {
-      contractAddress = safeSingletonDeployment?.networkAddresses[chainId]
-    }
+  const contractAddress = safeSingletonDeployment?.networkAddresses[chainId]
 
   if (!contractAddress) {
     throw new Error(`GnosisSafe contract not found for chainId: ${chainId}`)
@@ -90,7 +84,7 @@ const getGnosisSafeContractInstance = (web3: Web3, chainId: ChainId, address: St
  * @param {Web3} web3
  * @param {ChainId} chainId
  */
-const getProxyFactoryContractInstance = (web3: Web3, chainId: ChainId, address: String): ProxyFactory => {
+const getProxyFactoryContractInstance = (web3: Web3, chainId: ChainId): ProxyFactory => {
   const proxyFactoryDeployment =
     getProxyFactoryDeployment({
       version: LATEST_SAFE_VERSION,
@@ -99,13 +93,7 @@ const getProxyFactoryContractInstance = (web3: Web3, chainId: ChainId, address: 
     getProxyFactoryDeployment({
       version: LATEST_SAFE_VERSION,
     })
-
-    let contractAddress;
-    if (address) {
-      contractAddress = address
-    } else {
-      contractAddress = proxyFactoryDeployment?.networkAddresses[chainId]
-    }
+  const contractAddress = proxyFactoryDeployment?.networkAddresses[chainId]
 
   if (!contractAddress) {
     throw new Error(`GnosisSafeProxyFactory contract not found for chainId: ${chainId}`)
@@ -119,7 +107,7 @@ const getProxyFactoryContractInstance = (web3: Web3, chainId: ChainId, address: 
  * @param {Web3} web3
  * @param {ChainId} chainId
  */
-const getFallbackHandlerContractInstance = (web3: Web3, chainId: ChainId, address: String): CompatibilityFallbackHandler => {
+const getFallbackHandlerContractInstance = (web3: Web3, chainId: ChainId): CompatibilityFallbackHandler => {
   const fallbackHandlerDeployment =
     getFallbackHandlerDeployment({
       version: LATEST_SAFE_VERSION,
@@ -128,13 +116,7 @@ const getFallbackHandlerContractInstance = (web3: Web3, chainId: ChainId, addres
     getFallbackHandlerDeployment({
       version: LATEST_SAFE_VERSION,
     })
-
-    let contractAddress
-    if (address) {
-      contractAddress = address
-    } else {
-      contractAddress = fallbackHandlerDeployment?.networkAddresses[chainId]
-    }
+  const contractAddress = fallbackHandlerDeployment?.networkAddresses[chainId]
 
   if (!contractAddress) {
     throw new Error(`FallbackHandler contract not found for chainId: ${chainId}`)
@@ -151,19 +133,12 @@ const getFallbackHandlerContractInstance = (web3: Web3, chainId: ChainId, addres
  * @param {Web3} web3
  * @param {ChainId} chainId
  */
-const getMultiSendCallOnlyContractInstance = (web3: Web3, chainId: ChainId, address: String): MultiSendCallOnly => {
+const getMultiSendCallOnlyContractInstance = (web3: Web3, chainId: ChainId): MultiSendCallOnly => {
   const multiSendDeployment =
     getMultiSendCallOnlyDeployment({
       network: chainId.toString(),
     }) || getMultiSendCallOnlyDeployment()
- 
-
-  let contractAddress;
-    if (address) {
-      contractAddress = address
-    } else {
-       contractAddress = multiSendDeployment?.networkAddresses[chainId]
-    }
+  const contractAddress = multiSendDeployment?.networkAddresses[chainId]
 
   if (!contractAddress) {
     throw new Error(`MultiSendCallOnly contract not found for chainId: ${chainId}`)
@@ -177,18 +152,12 @@ const getMultiSendCallOnlyContractInstance = (web3: Web3, chainId: ChainId, addr
  * @param {Web3} web3
  * @param {ChainId} chainId
  */
-const getMultiSendContractInstance = (web3: Web3, chainId: ChainId, address: String): MultiSend => {
+const getMultiSendContractInstance = (web3: Web3, chainId: ChainId): MultiSend => {
   const multiSendDeployment =
     getMultiSendDeployment({
       network: chainId.toString(),
     }) || getMultiSendDeployment()
-
-    let contractAddress;
-    if (address) {
-      contractAddress = address
-    } else {
-      contractAddress = multiSendDeployment?.networkAddresses[chainId]
-    }
+  const contractAddress = multiSendDeployment?.networkAddresses[chainId]
 
   if (!contractAddress) {
     throw new Error(`MultiSend contract not found for chainId: ${chainId}`)
@@ -255,24 +224,19 @@ export const instantiateSafeContracts = (): void => {
   const chainId = _getChainId()
 
   // Create ProxyFactory Master Copy
-  const proxyAddress = "0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2";
-  proxyFactoryMaster = getProxyFactoryContractInstance(web3, chainId, proxyAddress)
+  proxyFactoryMaster = getProxyFactoryContractInstance(web3, chainId)
 
   // Create Safe Master copy
-  const safeMasterAddress = "0xeCeF4D2b021a6C54E156adEF917c64c419dffcc0";
-  safeMaster = getGnosisSafeContractInstance(web3, chainId, safeMasterAddress)
+  safeMaster = getGnosisSafeContractInstance(web3, chainId)
 
   // Create Fallback Handler
-  const fallbackHandlerAddress = "0x1AC114C2099aFAf5261731655Dc6c306bFcd4Dbd";
-  fallbackHandler = getFallbackHandlerContractInstance(web3, chainId, fallbackHandlerAddress)
+  fallbackHandler = getFallbackHandlerContractInstance(web3, chainId)
 
   // Create MultiSend contract
-  const multiSendAddress = "0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761";
-  multiSend = getMultiSendContractInstance(web3, chainId, multiSendAddress)
+  multiSend = getMultiSendContractInstance(web3, chainId)
 
   // Create MultiSendCallOnly contract
-  const multiSendCallOnlyAddress = "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D";
-  multiSendCallOnly = getMultiSendCallOnlyContractInstance(web3, chainId, multiSendCallOnlyAddress)
+  multiSendCallOnly = getMultiSendCallOnlyContractInstance(web3, chainId)
 }
 
 export const getSafeMasterContract = (): GnosisSafe => {
