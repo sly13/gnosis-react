@@ -21,7 +21,6 @@ import { useSelector } from 'react-redux'
 import { OVERVIEW_EVENTS } from 'src/utils/events/overview'
 import Track from 'src/components/Track'
 import Notifications from 'src/components/AppLayout/Header/components/Notifications'
-import { Text } from '@gnosis.pm/safe-react-components'
 
 const styles = () => ({
   root: {
@@ -101,11 +100,8 @@ const Layout = ({ classes, providerDetails, providerInfo }) => {
     <Row className={classes.summary}>
       <Col className={classes.logo} middle="xs" start="xs">
         <Track {...OVERVIEW_EVENTS.HOME}>
-          <Link to={ROOT_ROUTE} style={{textDecoration : 'none'}}>
-            <Text size="xl" strong>
-              <h2 className='logo'>ARCHON</h2>
-            </Text>
-            {/* <Img alt="Gnosis Safe" height={36} src={SafeLogo} testId="heading-gnosis-logo" id="safe-logo" /> */}
+          <Link to={ROOT_ROUTE}>
+            <Img alt="Gnosis Safe" height={36} src={SafeLogo} testId="heading-gnosis-logo" id="safe-logo" />
           </Link>
         </Track>
       </Col>
